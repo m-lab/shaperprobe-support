@@ -22,4 +22,4 @@ pushd $SOURCE_DIR/shaperprobe/shaperprobeserver
     cp server_select $BUILD_DIR/
 popd
 
-cp -r init $BUILD_DIR/
+cp -r $SOURCE_DIR/init $BUILD_DIR/
