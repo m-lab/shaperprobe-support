@@ -1,0 +1,3 @@
+[submodule "shaperprobe"]
+	path = shaperprobe
+	url = https://code.google.com/p/shaperprobe/

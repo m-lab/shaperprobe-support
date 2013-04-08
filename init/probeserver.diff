@@ -1,0 +1,11 @@
+--- probeserver.c.orig	2013-02-27 20:16:18.000000000 +0000
++++ probeserver.c	2013-02-27 20:14:58.000000000 +0000
+@@ -107,7 +107,7 @@
+ 	now = localtime(&tval);
+ 	if(now == NULL)
+ 		return -1;
+-	if(strftime(dir, dirlen, "dropbox/%Y/%2m/%2d/", now) == 0)
++	if(strftime(dir, dirlen, "/var/spool/gt_partha/%Y/%2m/%2d/", now) == 0)
+ 		return -1;
+ 
+ 	if(gethostname(myname, 128) == -1)
