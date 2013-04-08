@@ -1,33 +1,25 @@
 #!/bin/bash
 
-#if [ ! -f server.tgz ] ; then
-#    echo "I'm sorry; we don't have an authoritative source repo to pull from"
-#    echo "Instead, if you can provide the 'server.tgz' to work with we can use that"
-#    echo "Otherwise, have a nice day."
-#    exit 1
-#fi
-
-TOPDIR=/home/gt_partha
-mkdir -p $TOPDIR
-rm -rf $TOPDIR/*
-
-[ -d shaperprobe ] || \
-    git clone -b master https://code.google.com/p/shaperprobe/
-
-if [ ! -f $TOPDIR/shaperprobe/daemon.pl ] ; then
-    #rm -rf server
-    #tar -zxvf server.tgz 
-    pushd shaperprobe/shaperprobeserver
-        patch -p0 < ../init/probeserver.diff 
-        make
-        gcc -Wall -o server_select serverSelect.c
-        mkdir -p $TOPDIR/shaperprobe
-        cp daemon.pl shaperprobeserver $TOPDIR/shaperprobe
-        cp server_select $TOPDIR/
-    popd
+if [ -z "$SOURCE_DIR" ] ; then
+    echo "Expected SOURCE_DIR in environment"
+    exit 1
+fi
+if [ -z "$BUILD_DIR" ] ; then
+    echo "Expected BIULD_DIR in environment"
+    exit 1
 fi
 
-cp -r init $TOPDIR/
+if test -d $BUILD_DIR ; then
+    rm -rf $BUILD_DIR/*
+fi
 
-tar -C $TOPDIR -cvf gt_partha.tar .
+pushd $SOURCE_DIR/shaperprobe/shaperprobeserver
+    patch -p0 < $SOURCE_DIR/init/probeserver.diff 
+    make
+    gcc -Wall -o server_select serverSelect.c
+    mkdir -p $BUILD_DIR/shaperprobe
+    cp daemon.pl shaperprobeserver $BUILD_DIR/shaperprobe
+    cp server_select $BUILD_DIR/
+popd
 
+cp -r init $BUILD_DIR/
